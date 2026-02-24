@@ -78,7 +78,7 @@ st.markdown('<div class="section-title">📝 Input Text</div>', unsafe_allow_htm
 
 user_text = st.text_area(
     label="Paste or type your text here:",
-    placeholder="e.g. "The movie was an absolute masterpiece , I loved every second of it!"",
+    placeholder="e.g. \"The movie was an absolute masterpiece , I loved every second of it!\"",
     height=140,
     label_visibility="collapsed",
 )
