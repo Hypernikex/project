@@ -108,17 +108,41 @@ def _build_xgboost_model():
     return model, vectorizer
 
 
-@st.cache_resource(show_spinner="Loading XGBoost model…")
+@st.cache_resource(show_spinner="Training XGBoost on SST-2 dataset…")
 def load_xgboost():
-    """Load (or build) XGBoost + TF-IDF."""
+    from datasets import load_dataset
+    import pickle, os
+
     model_path = "xgb_model.pkl"
     if os.path.exists(model_path):
         with open(model_path, "rb") as f:
-            model, vectorizer = pickle.load(f)
-    else:
-        model, vectorizer = _build_xgboost_model()
-    return model, vectorizer
+            return pickle.load(f)
 
+    # Load real SST-2 data
+    dataset = load_dataset("glue", "sst2", split="train")
+    texts  = dataset["sentence"][:5000]   # 5000 samples — fast but effective
+    labels = dataset["label"][:5000]
+
+    vectorizer = TfidfVectorizer(
+        max_features=5000, ngram_range=(1, 2), sublinear_tf=True
+    )
+    X = vectorizer.fit_transform(texts)
+
+    model = xgb.XGBClassifier(
+        n_estimators=200,
+        max_depth=5,
+        learning_rate=0.1,
+        use_label_encoder=False,
+        eval_metric="logloss",
+        verbosity=0,
+    )
+    model.fit(X, labels)
+    return model, vectorizer
+```
+
+Then add `datasets` to your `requirements.txt`:
+```
+datasets>=2.18.0
 
 def predict_xgboost(text: str, model, vectorizer) -> dict:
     """Run inference with XGBoost and return result dict."""
