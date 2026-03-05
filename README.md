@@ -29,7 +29,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-The app will open at **http://localhost:8501**.
+The app will open at https://project-7dezhu9e5w56t9qjebfzgc.streamlit.app/
 
 > **First launch:** BERT & DistilBERT checkpoints (~270 MB each) are downloaded 
 > from Hugging Face automatically and cached locally. Subsequent launches are instant.
