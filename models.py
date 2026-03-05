@@ -145,7 +145,7 @@ def predict_xgboost(text: str, model, vectorizer) -> dict:
 
 @st.cache_resource(show_spinner="Loading BERT model… (first load may take ~30 s)")
 def load_bert():
-    checkpoint = "assemblyai/bert-large-uncased-SST-2"
+    checkpoint = "yoshitomo-matsubara/bert-base-uncased-sst2"
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
     model     = AutoModelForSequenceClassification.from_pretrained(checkpoint)
     model.eval()
